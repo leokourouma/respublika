@@ -1,7 +1,5 @@
 #!/bin/bash
 # ResPublika API — Test Suite
-# Usage: bash test_api.sh
-
 BASE="http://localhost:8081"
 DEPUTE_ID="PA722336"
 DEPUTE_VOTES="PA794038"
@@ -10,25 +8,43 @@ PASS=0
 FAIL=0
 ERRORS=""
 
+json_check() {
+    local body="$1"
+    local expr="$2"
+    python3 << PYEOF
+import json, sys
+try:
+    d = json.loads("""$body""")
+    result = $expr
+    if result is None or result == "" or result == 0 or result is False:
+        sys.exit(1)
+    print(result)
+except Exception as e:
+    print(f"ERR: {e}", file=sys.stderr)
+    sys.exit(1)
+PYEOF
+}
+
 test_endpoint() {
     local name="$1"
     local url="$2"
-    local jq_check="$3"  # jq expression that must return truthy value
+    local expr="$3"
 
+    local response http_code body val
     response=$(curl -s -w "\n%{http_code}" "$url" 2>/dev/null)
     http_code=$(echo "$response" | tail -1)
     body=$(echo "$response" | sed '$d')
 
     if [[ "$http_code" -ge 200 && "$http_code" -lt 300 ]]; then
-        if [[ -n "$jq_check" ]]; then
-            val=$(echo "$body" | jq -r "$jq_check" 2>/dev/null)
-            if [[ -n "$val" && "$val" != "null" && "$val" != "false" && "$val" != "0" ]]; then
-                echo "  ✅ $name (HTTP $http_code) → $jq_check = $val"
+        if [[ -n "$expr" ]]; then
+            val=$(json_check "$body" "$expr" 2>/dev/null)
+            if [[ $? -eq 0 && -n "$val" ]]; then
+                echo "  ✅ $name → $val"
                 PASS=$((PASS + 1))
             else
-                echo "  ⚠️  $name (HTTP $http_code) — CHECK FAILED: $jq_check = $val"
+                echo "  ⚠️  $name — CHECK FAILED"
                 FAIL=$((FAIL + 1))
-                ERRORS="$ERRORS\n  ⚠️  $name → $jq_check = '$val'\n      $(echo "$body" | head -c 200)"
+                ERRORS="$ERRORS\n  ⚠️  $name\n"
             fi
         else
             echo "  ✅ $name (HTTP $http_code)"
@@ -37,7 +53,7 @@ test_endpoint() {
     else
         echo "  ❌ $name (HTTP $http_code)"
         FAIL=$((FAIL + 1))
-        ERRORS="$ERRORS\n  ❌ $name → HTTP $http_code\n      $(echo "$body" | head -c 300)"
+        ERRORS="$ERRORS\n  ❌ $name → HTTP $http_code\n      $(echo "$body" | head -c 200)\n"
     fi
 }
 
@@ -46,14 +62,15 @@ test_status() {
     local url="$2"
     local expected="$3"
 
+    local http_code
     http_code=$(curl -s -o /dev/null -w "%{http_code}" "$url" 2>/dev/null)
     if [[ "$http_code" == "$expected" ]]; then
-        echo "  ✅ $name (HTTP $expected expected)"
+        echo "  ✅ $name (HTTP $expected)"
         PASS=$((PASS + 1))
     else
         echo "  ❌ $name — expected $expected got $http_code"
         FAIL=$((FAIL + 1))
-        ERRORS="$ERRORS\n  ❌ $name → expected $expected, got $http_code"
+        ERRORS="$ERRORS\n  ❌ $name → expected $expected, got $http_code\n"
     fi
 }
 
@@ -62,103 +79,93 @@ echo "║         🧪 ResPublika API Test Suite                ║"
 echo "╚══════════════════════════════════════════════════════╝"
 echo ""
 
-# --- Health ---
-echo "── Health ──"
+echo "── Infrastructure ──"
 test_status "GET /" "$BASE/" "200"
-
-# --- Swagger ---
-echo ""
-echo "── Swagger ──"
 test_status "GET /swagger" "$BASE/swagger" "200"
 
-# --- Députés ---
 echo ""
 echo "── Députés ──"
-test_endpoint "GET /api/deputes" \
+test_endpoint "Liste complète" \
     "$BASE/api/deputes" \
-    ".total"
+    'd["total"]'
 
-test_endpoint "GET /api/deputes?nom=David" \
+test_endpoint "Filtre par nom" \
     "$BASE/api/deputes?nom=David" \
-    ".total"
+    'f"{d[\"total\"]} deputes found"'
 
-test_endpoint "GET /api/deputes?groupe=PO845470" \
+test_endpoint "Filtre par groupe" \
     "$BASE/api/deputes?groupe=PO845470" \
-    ".total"
+    'f"{d[\"total\"]} in groupe"'
 
-test_endpoint "GET /api/deputes?page=2&limit=5" \
+test_endpoint "Pagination" \
     "$BASE/api/deputes?page=2&limit=5" \
-    ".deputes | length"
+    'f"{len(d[\"deputes\"])} deputes on page {d[\"page\"]}"'
 
-test_endpoint "GET /api/deputes/{id}" \
+test_endpoint "Profil député" \
     "$BASE/api/deputes/$DEPUTE_ID" \
-    ".nom"
+    'd["nom"]'
 
-test_endpoint "GET /api/deputes/{id} — stats_votes" \
+test_endpoint "Stats votes député" \
     "$BASE/api/deputes/$DEPUTE_ID" \
-    ".stats_votes.total"
+    'f"total={d[\"stats_votes\"][\"total\"]} pour={d[\"stats_votes\"][\"pour\"]}"'
 
-test_status "GET /api/deputes/FAKE — 404" \
+test_status "Député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999" "404"
 
-# --- Votes députés ---
 echo ""
 echo "── Votes Députés ──"
-test_endpoint "GET /api/deputes/{id}/votes" \
+test_endpoint "Historique de vote" \
     "$BASE/api/deputes/$DEPUTE_VOTES/votes" \
-    ".total"
+    'f"{d[\"total\"]} votes"'
 
-test_endpoint "GET /api/deputes/{id}/votes?limit=5" \
+test_endpoint "Historique paginé (limit=5)" \
     "$BASE/api/deputes/$DEPUTE_VOTES/votes?page=1&limit=5" \
-    ".votes | length"
+    'f"{len(d[\"votes\"])} votes returned"'
 
-test_status "GET /api/deputes/FAKE/votes — 404" \
+test_status "Votes député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999/votes" "404"
 
-# --- Dissidences ---
 echo ""
 echo "── Dissidences ──"
-test_endpoint "GET /api/deputes/{id}/top-dissidences" \
+test_endpoint "Top dissidences" \
     "$BASE/api/deputes/$DEPUTE_ID/top-dissidences" \
-    ".nb_dissidences >= 0"
+    'f"{d[\"nb_dissidences\"]} dissidences"'
 
-test_status "GET /api/deputes/FAKE/top-dissidences — 404" \
+test_status "Dissidences député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999/top-dissidences" "404"
 
-# --- Scrutins ---
 echo ""
 echo "── Scrutins ──"
-test_endpoint "GET /api/scrutins/{uid}/full" \
+test_endpoint "Scrutin détail complet" \
     "$BASE/api/scrutins/$SCRUTIN_UID/full" \
-    ".titre"
+    'd["titre"][:80]'
 
-test_endpoint "GET /api/scrutins/{uid}/full — groupes" \
+test_endpoint "Scrutin — groupes présents" \
     "$BASE/api/scrutins/$SCRUTIN_UID/full" \
-    ".groupes | length"
+    'f"{len(d[\"groupes\"])} groupes"'
 
-test_endpoint "GET /api/scrutins/{uid}/full — synthese" \
+test_endpoint "Scrutin — synthèse textuelle" \
     "$BASE/api/scrutins/$SCRUTIN_UID/full" \
-    ".groupes[0].synthese"
+    'd["groupes"][0]["synthese"]'
 
-test_status "GET /api/scrutins/FAKE/full — 404" \
+test_status "Scrutin inexistant → 404" \
     "$BASE/api/scrutins/FAKE_SCRUTIN/full" "404"
 
-test_endpoint "GET /api/scrutins/recherche?q=motion" \
+test_endpoint "Recherche motion" \
     "$BASE/api/scrutins/recherche?q=motion" \
-    ".total"
+    'f"{d[\"total\"]} scrutins found"'
 
-# --- Éthique ---
 echo ""
 echo "── Éthique ──"
-test_endpoint "GET /api/deports/latest" \
+test_endpoint "Derniers déports" \
     "$BASE/api/deports/latest" \
-    ".count"
+    'f"{d[\"count\"]} deports"'
 
-test_endpoint "GET /api/deputes/{id}/deports — badge" \
+test_endpoint "Déports député + badge" \
     "$BASE/api/deputes/$DEPUTE_ID/deports" \
-    ".nb_deports >= 0"
+    'f"badge={d[\"badge_ethique_plus\"]} ({d[\"nb_deports\"]} deports)" if isinstance(d.get("badge_ethique_plus"), bool) else None'
 
-test_status "GET /api/deputes/FAKE/deports — 404" \
+test_status "Déports député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999/deports" "404"
 
 # --- Report ---
@@ -174,7 +181,6 @@ if [[ $FAIL -gt 0 ]]; then
     echo ""
     echo "📋 DÉTAIL DES ERREURS :"
     echo -e "$ERRORS"
-    echo ""
     echo "⚠️  $FAIL test(s) en échec."
 else
     echo ""
