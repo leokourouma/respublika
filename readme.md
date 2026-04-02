@@ -11,35 +11,36 @@ Suis ces étapes pour configurer et lancer le projet sur ton Mac :
 ### 1. Prérequis
 
 Il est recommandé d'utiliser **Homebrew** pour installer le JDK et Git :
+
 ```bash
 # Installer le JDK 17
 brew install openjdk@17
 
 # Installer Git
 brew install git
-` ` `
+```
 
 ### 2. Cloner le projet
 
 Récupère le code via SSH (assure-toi que ta clé id_ed25519 est configurée sur GitHub) :
 
-` ` `bash
+```bash
 git clone git@github.com:leokourouma/respublika.git
 cd respublika
-` ` `
+```
 
 ### 3. Compilation et lancement
 
 Utilise le wrapper Gradle inclus pour compiler et exécuter :
 
-` ` `bash
+```bash
 # Donner les droits d'exécution au script
 chmod +x gradlew
 
 # Compiler et lancer l'application
 ./gradlew build
 ./gradlew run
-` ` `
+```
 
 ---
 
@@ -63,7 +64,7 @@ Rends-toi sur le portail Open Data de l'Assemblée et télécharge les archives 
 
 Décompresse les fichiers dans les sous-dossiers respectifs à la racine du projet :
 
-` ` `
+```
 respublika/
 └── data/
     ├── acteurs/          # Placer les JSON ici
@@ -72,7 +73,7 @@ respublika/
     ├── deports/          # Placer les JSON ici
     ├── organes/          # Placer les JSON ici
     └── scrutins/         # Placer les JSON ici
-` ` `
+```
 
 > **Note :** Chaque dossier contient un fichier `.gitkeep` pour maintenir l'arborescence sur le dépôt distant.
 
@@ -90,6 +91,3 @@ Si tu utilises **IntelliJ IDEA** :
 ## 📝 Licence
 
 Ce projet est sous licence [MIT](LICENSE).
-```
-
-Les ` ` ` sont évidemment des ` ` ` sans espaces — je les ai espacés ici pour éviter que le rendu Markdown ne les interprète dans ma réponse.
