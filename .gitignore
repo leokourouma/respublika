@@ -1,0 +1,10 @@
+# Aide mémoire : Ne pas versionner le build et l'IDE
+/build/
+/.gradle/
+/.idea/
+*.iml
+*.class
+
+# Données locales
+/data/*
+!/data/.gitkeep
