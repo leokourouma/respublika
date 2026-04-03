@@ -2,48 +2,6 @@
 
 Projet Kotlin dédié à l'analyse et au traitement des données ouvertes de l'Assemblée Nationale française.
 
----
-
-## 🚀 Installation sur macOS
-
-Suis ces étapes pour configurer et lancer le projet sur ton Mac :
-
-### 1. Prérequis
-
-Il est recommandé d'utiliser **Homebrew** pour installer le JDK et Git :
-
-```bash
-# Installer le JDK 17
-brew install openjdk@17
-
-# Installer Git
-brew install git
-```
-
-### 2. Cloner le projet
-
-Récupère le code via SSH (assure-toi que ta clé id_ed25519 est configurée sur GitHub) :
-
-```bash
-git clone git@github.com:leokourouma/respublika.git
-cd respublika
-```
-
-### 3. Compilation et lancement
-
-Utilise le wrapper Gradle inclus pour compiler et exécuter :
-
-```bash
-# Donner les droits d'exécution au script
-chmod +x gradlew
-
-# Compiler et lancer l'application
-./gradlew build
-./gradlew run
-```
-
----
-
 ## 📊 Gestion des données (Open Data)
 
 Le projet traite les données issues de [data.assemblee-nationale.fr](https://data.assemblee-nationale.fr).
@@ -76,15 +34,6 @@ respublika/
 ```
 
 > **Note :** Chaque dossier contient un fichier `.gitkeep` pour maintenir l'arborescence sur le dépôt distant.
-
----
-
-## 🛠️ Développement
-
-Si tu utilises **IntelliJ IDEA** :
-
-1. Ouvre le projet en sélectionnant le fichier `build.gradle.kts`.
-2. Laisse IntelliJ importer les dépendances Gradle automatiquement.
 
 ---
 
