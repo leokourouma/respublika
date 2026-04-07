@@ -11,11 +11,11 @@ ERRORS=""
 json_check() {
     local body="$1"
     local expr="$2"
-    python3 << PYEOF
-import json, sys
+    JBODY="$body" EXPR="$expr" python3 << 'PYEOF'
+import json, sys, os
 try:
-    d = json.loads("""$body""")
-    result = $expr
+    d = json.loads(os.environ['JBODY'])
+    result = eval(os.environ['EXPR'])
     if result is None or result == "" or result == 0 or result is False:
         sys.exit(1)
     print(result)
@@ -91,15 +91,15 @@ test_endpoint "Liste complète" \
 
 test_endpoint "Filtre par nom" \
     "$BASE/api/deputes?nom=David" \
-    'f"{d[\"total\"]} deputes found"'
+    "f\"{d['total']} deputes found\""
 
 test_endpoint "Filtre par groupe" \
     "$BASE/api/deputes?groupe=PO845470" \
-    'f"{d[\"total\"]} in groupe"'
+    "f\"{d['total']} in groupe\""
 
 test_endpoint "Pagination" \
     "$BASE/api/deputes?page=2&limit=5" \
-    'f"{len(d[\"deputes\"])} deputes on page {d[\"page\"]}"'
+    "f\"{len(d['deputes'])} deputes on page {d['page']}\""
 
 test_endpoint "Profil député" \
     "$BASE/api/deputes/$DEPUTE_ID" \
@@ -107,7 +107,7 @@ test_endpoint "Profil député" \
 
 test_endpoint "Stats votes député" \
     "$BASE/api/deputes/$DEPUTE_ID" \
-    'f"total={d[\"stats_votes\"][\"total\"]} pour={d[\"stats_votes\"][\"pour\"]}"'
+    "f\"total={d['stats_votes']['total']} pour={d['stats_votes']['pour']}\""
 
 test_status "Député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999" "404"
@@ -116,11 +116,11 @@ echo ""
 echo "── Votes Députés ──"
 test_endpoint "Historique de vote" \
     "$BASE/api/deputes/$DEPUTE_VOTES/votes" \
-    'f"{d[\"total\"]} votes"'
+    "f\"{d['total']} votes\""
 
 test_endpoint "Historique paginé (limit=5)" \
     "$BASE/api/deputes/$DEPUTE_VOTES/votes?page=1&limit=5" \
-    'f"{len(d[\"votes\"])} votes returned"'
+    "f\"{len(d['votes'])} votes returned\""
 
 test_status "Votes député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999/votes" "404"
@@ -129,7 +129,7 @@ echo ""
 echo "── Dissidences ──"
 test_endpoint "Top dissidences" \
     "$BASE/api/deputes/$DEPUTE_ID/top-dissidences" \
-    'f"{d[\"nb_dissidences\"]} dissidences"'
+    "f\"{d['nb_dissidences']} dissidences\""
 
 test_status "Dissidences député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999/top-dissidences" "404"
@@ -142,7 +142,7 @@ test_endpoint "Scrutin détail complet" \
 
 test_endpoint "Scrutin — groupes présents" \
     "$BASE/api/scrutins/$SCRUTIN_UID/full" \
-    'f"{len(d[\"groupes\"])} groupes"'
+    "f\"{len(d['groupes'])} groupes\""
 
 test_endpoint "Scrutin — synthèse textuelle" \
     "$BASE/api/scrutins/$SCRUTIN_UID/full" \
@@ -153,17 +153,17 @@ test_status "Scrutin inexistant → 404" \
 
 test_endpoint "Recherche motion" \
     "$BASE/api/scrutins/recherche?q=motion" \
-    'f"{d[\"total\"]} scrutins found"'
+    "f\"{d['total']} scrutins found\""
 
 echo ""
 echo "── Éthique ──"
 test_endpoint "Derniers déports" \
     "$BASE/api/deports/latest" \
-    'f"{d[\"count\"]} deports"'
+    "f\"{d['count']} deports\""
 
 test_endpoint "Déports député + badge" \
     "$BASE/api/deputes/$DEPUTE_ID/deports" \
-    'f"badge={d[\"badge_ethique_plus\"]} ({d[\"nb_deports\"]} deports)" if isinstance(d.get("badge_ethique_plus"), bool) else None'
+    "f\"badge={d['badge_ethique_plus']} ({d['nb_deports']} deports)\" if isinstance(d.get('badge_ethique_plus'), bool) else None"
 
 test_status "Déports député inexistant → 404" \
     "$BASE/api/deputes/FAKE_999/deports" "404"

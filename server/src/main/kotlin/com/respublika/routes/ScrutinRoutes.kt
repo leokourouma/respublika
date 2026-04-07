@@ -11,6 +11,40 @@ import org.jetbrains.exposed.sql.*
 
 fun Route.scrutinRoutes() {
 
+    // GET /api/scrutins/latest — Derniers scrutins (paginé)
+    get("/api/scrutins/latest") {
+        val page = (call.parameters["page"]?.toIntOrNull() ?: 1).coerceAtLeast(1)
+        val limit = (call.parameters["limit"]?.toIntOrNull() ?: 20).coerceIn(1, 100)
+        val offset = ((page - 1) * limit).toLong()
+
+        val result = dbQuery {
+            val baseQuery = Scrutins.selectAll()
+            val total = baseQuery.count()
+            val scrutins = baseQuery
+                .orderBy(Scrutins.dateVote, SortOrder.DESC)
+                .limit(limit).offset(offset)
+                .map { row ->
+                    buildJsonObject {
+                        put("uid", row[Scrutins.uid])
+                        put("titre", row[Scrutins.titre])
+                        put("date_vote", row[Scrutins.dateVote])
+                        put("sort", row[Scrutins.sort] ?: "")
+                        put("nombre_votants", row[Scrutins.nombreVotants] ?: 0)
+                    }
+                }
+
+            buildJsonObject {
+                put("page", page)
+                put("limit", limit)
+                put("total", total)
+                put("total_pages", (total + limit - 1) / limit)
+                put("scrutins", JsonArray(scrutins))
+            }
+        }
+
+        call.respond(result)
+    }
+
     // GET /api/scrutins/{uid}/full — Détail complet avec synthèse par groupe
     get("/api/scrutins/{uid}/full") {
         val uid = call.parameters["uid"] ?: return@get call.respondText(

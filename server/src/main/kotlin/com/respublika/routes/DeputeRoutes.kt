@@ -11,6 +11,74 @@ import org.jetbrains.exposed.sql.*
 
 fun Route.deputeRoutes() {
 
+    // GET /api/deputes/random — Député aléatoire avec stats
+    get("/api/deputes/random") {
+        val result = dbQuery {
+            val total = Deputes.selectAll().count()
+            if (total == 0L) return@dbQuery null
+
+            val randomOffset = (Math.random() * total).toLong()
+            val depute = Deputes.leftJoin(Organes, { groupePolitiqueUid }, { uid })
+                .selectAll()
+                .limit(1).offset(randomOffset)
+                .singleOrNull() ?: return@dbQuery null
+
+            val deputeId = depute[Deputes.idAn]
+
+            val votes = VotesIndividuels.selectAll()
+                .where { VotesIndividuels.deputeId eq deputeId }
+            val stats = votes.groupBy { it[VotesIndividuels.position] }
+                .mapValues { it.value.size }
+
+            val groupeUid = depute[Deputes.groupePolitiqueUid]
+            val nbDissidences = if (groupeUid != null) {
+                (VotesIndividuels.join(VotesGroupes, JoinType.INNER, additionalConstraint = {
+                    (VotesIndividuels.scrutinUid eq VotesGroupes.scrutinUid) and
+                    (VotesGroupes.groupeUid eq groupeUid)
+                }))
+                    .selectAll()
+                    .where { VotesIndividuels.deputeId eq deputeId }
+                    .andWhere { VotesIndividuels.position neq VotesGroupes.positionMajoritaire }
+                    .count()
+            } else 0L
+
+            val totalVotes = stats.values.sum()
+
+            buildJsonObject {
+                put("id_an", depute[Deputes.idAn])
+                put("nom", depute[Deputes.civPrenomNom])
+                putJsonObject("groupe") {
+                    put("uid", groupeUid ?: "")
+                    put("libelle", depute.getOrNull(Organes.libelle) ?: "")
+                    put("abrege", depute.getOrNull(Organes.libelleAbrege) ?: "")
+                    put("couleur", depute.getOrNull(Organes.couleurAssociee) ?: "")
+                }
+                putJsonObject("stats_votes") {
+                    put("total", totalVotes)
+                    put("pour", stats["pour"] ?: 0)
+                    put("contre", stats["contre"] ?: 0)
+                    put("abstention", stats["abstention"] ?: 0)
+                    put("non_votant", stats["non_votant"] ?: 0)
+                }
+                put("nb_dissidences", nbDissidences)
+                put("participation_pct", if (totalVotes > 0) {
+                    // rough estimate: total scrutins as baseline
+                    val totalScrutins = Scrutins.selectAll().count()
+                    if (totalScrutins > 0) ((totalVotes.toDouble() / totalScrutins) * 100).toInt() else 0
+                } else 0)
+                put("loyaute_pct", if (totalVotes > 0 && nbDissidences >= 0) {
+                    ((1.0 - nbDissidences.toDouble() / totalVotes) * 100).toInt()
+                } else 0)
+            }
+        }
+
+        if (result == null) {
+            call.respondText("Aucun député trouvé", status = HttpStatusCode.NotFound)
+        } else {
+            call.respond(result)
+        }
+    }
+
     // GET /api/deputes — Liste paginée avec filtres
     get("/api/deputes") {
         val page = (call.parameters["page"]?.toIntOrNull() ?: 1).coerceAtLeast(1)
