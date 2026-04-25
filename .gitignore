@@ -8,6 +8,14 @@
 # Données locales
 /data/*
 !/data/.gitkeep
+<<<<<<< Updated upstream
 # Gradle / Kotlin build artifacts
 build/
 .gradle/
+=======
+
+# Secrets
+.env
+.env.local
+.env.*.local
+>>>>>>> Stashed changes

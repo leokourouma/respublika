@@ -4,6 +4,10 @@ ktor = "2.3.12"
 serialization = "1.7.3"
 exposed = "0.56.0"
 postgresql = "42.7.4"
+bcrypt = "0.10.2"
+logback = "1.5.6"
+ktor-test = "2.3.12"
+kotlin-test = "2.1.0"
 
 [libraries]
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
@@ -16,3 +20,10 @@ ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negoti
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
 ktor-server-swagger = { module = "io.ktor:ktor-server-swagger-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm", version.ref = "ktor" }
+ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt-jvm", version.ref = "ktor" }
+bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "bcrypt" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+ktor-server-test = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-test" }
+h2 = { module = "com.h2database:h2", version = "2.2.224" }

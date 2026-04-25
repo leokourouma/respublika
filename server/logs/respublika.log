@@ -1,0 +1,218 @@
+2026-04-25 17:46:07.493 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:07.630 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - Application started in 0.144 seconds.
+2026-04-25 17:46:07.632 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:07.633 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:07.990 [DefaultDispatcher-worker-1 @request#2] INFO  AuthRoutes - New user registered: id=1, email=wrong@example.com
+2026-04-25 17:46:08.258 [DefaultDispatcher-worker-3 @request#12] WARN  AuthRoutes - Failed login attempt for email: wrong@example.com
+2026-04-25 17:46:08.275 [DefaultDispatcher-worker-6 @call-context#18] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.276 [DefaultDispatcher-worker-6 @call-context#18] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:08.277 [DefaultDispatcher-worker-1 @coroutine#20] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.277 [DefaultDispatcher-worker-1 @coroutine#20] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.317 [DefaultDispatcher-worker-1 @call-context#27] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.318 [DefaultDispatcher-worker-1 @call-context#27] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:08.318 [DefaultDispatcher-worker-6 @coroutine#29] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.319 [DefaultDispatcher-worker-6 @coroutine#29] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.328 [DefaultDispatcher-worker-5 @call-context#36] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.329 [DefaultDispatcher-worker-5 @call-context#36] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:08.329 [DefaultDispatcher-worker-1 @coroutine#38] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.330 [DefaultDispatcher-worker-1 @coroutine#38] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.564 [DefaultDispatcher-worker-5 @request#36] INFO  AuthRoutes - New user registered: id=1, email=dup@example.com
+2026-04-25 17:46:08.577 [DefaultDispatcher-worker-6 @call-context#52] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.578 [DefaultDispatcher-worker-6 @call-context#52] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:46:08.578 [DefaultDispatcher-worker-4 @coroutine#54] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.578 [DefaultDispatcher-worker-4 @coroutine#54] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.587 [DefaultDispatcher-worker-6 @call-context#61] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.588 [DefaultDispatcher-worker-6 @call-context#61] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:08.588 [DefaultDispatcher-worker-3 @coroutine#63] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.588 [DefaultDispatcher-worker-3 @coroutine#63] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.820 [DefaultDispatcher-worker-6 @request#61] INFO  AuthRoutes - New user registered: id=1, email=test@example.com
+2026-04-25 17:46:08.837 [DefaultDispatcher-worker-6 @call-context#72] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.838 [DefaultDispatcher-worker-6 @call-context#72] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:08.838 [DefaultDispatcher-worker-1 @coroutine#74] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.839 [DefaultDispatcher-worker-1 @coroutine#74] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.846 [DefaultDispatcher-worker-6 @call-context#81] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.850 [DefaultDispatcher-worker-6 @call-context#81] INFO  ktor.test - Application started in 0.005 seconds.
+2026-04-25 17:46:08.850 [DefaultDispatcher-worker-4 @coroutine#83] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.850 [DefaultDispatcher-worker-4 @coroutine#83] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:08.859 [DefaultDispatcher-worker-3 @call-context#90] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:08.860 [DefaultDispatcher-worker-3 @call-context#90] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:08.861 [DefaultDispatcher-worker-6 @coroutine#92] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:08.861 [DefaultDispatcher-worker-6 @coroutine#92] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:09.096 [DefaultDispatcher-worker-3 @request#90] INFO  AuthRoutes - New user registered: id=1, email=flow@example.com
+2026-04-25 17:46:09.350 [DefaultDispatcher-worker-3 @request#100] INFO  AuthRoutes - User logged in: id=1, email=flow@example.com
+2026-04-25 17:46:09.360 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:09.361 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:09.361 [DefaultDispatcher-worker-1 @coroutine#108] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:09.361 [DefaultDispatcher-worker-1 @coroutine#108] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:09.363 [DefaultDispatcher-worker-4 @request#106] WARN  AuthRoutes - Failed login attempt for email: nobody@example.com
+2026-04-25 17:46:09.372 [DefaultDispatcher-worker-3 @call-context#116] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:46:09.372 [DefaultDispatcher-worker-3 @call-context#116] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:46:09.373 [DefaultDispatcher-worker-6 @coroutine#118] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:46:09.373 [DefaultDispatcher-worker-6 @coroutine#118] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:46:09.605 [DefaultDispatcher-worker-3 @request#116] INFO  AuthRoutes - New user registered: id=1, email=me@example.com
+2026-04-25 17:46:09.609 [DefaultDispatcher-worker-1 @request#126] WARN  AuthRoutes - Failed login attempt for email: me@example.com
+2026-04-25 17:49:10.846 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:49:10.989 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - Application started in 0.151 seconds.
+2026-04-25 17:49:10.992 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:49:10.992 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:49:11.361 [DefaultDispatcher-worker-1 @request#2] INFO  AuthRoutes - New user registered: id=1, email=me@example.com
+2026-04-25 17:49:11.640 [DefaultDispatcher-worker-3 @request#12] INFO  AuthRoutes - User logged in: id=1, email=me@example.com
+2026-04-25 17:50:26.303 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:26.442 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - Application started in 0.147 seconds.
+2026-04-25 17:50:26.444 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:26.445 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:26.827 [DefaultDispatcher-worker-2 @request#2] INFO  AuthRoutes - New user registered: id=1, email=wrong@example.com
+2026-04-25 17:50:27.091 [DefaultDispatcher-worker-1 @request#12] WARN  AuthRoutes - Failed login attempt for email: wrong@example.com
+2026-04-25 17:50:27.108 [DefaultDispatcher-worker-4 @call-context#18] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.109 [DefaultDispatcher-worker-4 @call-context#18] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:50:27.109 [DefaultDispatcher-worker-3 @coroutine#20] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.110 [DefaultDispatcher-worker-3 @coroutine#20] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.151 [DefaultDispatcher-worker-1 @call-context#27] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.152 [DefaultDispatcher-worker-1 @call-context#27] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:27.153 [DefaultDispatcher-worker-4 @coroutine#29] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.153 [DefaultDispatcher-worker-4 @coroutine#29] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.163 [DefaultDispatcher-worker-4 @call-context#36] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.164 [DefaultDispatcher-worker-4 @call-context#36] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:27.164 [DefaultDispatcher-worker-2 @coroutine#38] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.165 [DefaultDispatcher-worker-2 @coroutine#38] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.399 [DefaultDispatcher-worker-4 @request#36] INFO  AuthRoutes - New user registered: id=1, email=dup@example.com
+2026-04-25 17:50:27.413 [DefaultDispatcher-worker-1 @call-context#52] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.414 [DefaultDispatcher-worker-1 @call-context#52] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:50:27.414 [DefaultDispatcher-worker-2 @coroutine#54] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.415 [DefaultDispatcher-worker-2 @coroutine#54] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.425 [DefaultDispatcher-worker-4 @call-context#61] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.426 [DefaultDispatcher-worker-4 @call-context#61] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:27.427 [DefaultDispatcher-worker-1 @coroutine#63] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.427 [DefaultDispatcher-worker-1 @coroutine#63] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.668 [DefaultDispatcher-worker-4 @request#61] INFO  AuthRoutes - New user registered: id=1, email=test@example.com
+2026-04-25 17:50:27.686 [DefaultDispatcher-worker-4 @call-context#72] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.687 [DefaultDispatcher-worker-4 @call-context#72] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:27.687 [DefaultDispatcher-worker-1 @coroutine#74] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.688 [DefaultDispatcher-worker-1 @coroutine#74] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.695 [DefaultDispatcher-worker-4 @call-context#81] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.699 [DefaultDispatcher-worker-4 @call-context#81] INFO  ktor.test - Application started in 0.004 seconds.
+2026-04-25 17:50:27.700 [DefaultDispatcher-worker-2 @coroutine#83] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.700 [DefaultDispatcher-worker-2 @coroutine#83] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.710 [DefaultDispatcher-worker-1 @call-context#90] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:27.711 [DefaultDispatcher-worker-1 @call-context#90] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:27.712 [DefaultDispatcher-worker-2 @coroutine#92] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:27.712 [DefaultDispatcher-worker-2 @coroutine#92] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:27.947 [DefaultDispatcher-worker-1 @request#90] INFO  AuthRoutes - New user registered: id=1, email=flow@example.com
+2026-04-25 17:50:28.204 [DefaultDispatcher-worker-4 @request#100] INFO  AuthRoutes - User logged in: id=1, email=flow@example.com
+2026-04-25 17:50:28.214 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:28.215 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:28.215 [DefaultDispatcher-worker-2 @coroutine#108] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:28.216 [DefaultDispatcher-worker-2 @coroutine#108] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:28.217 [DefaultDispatcher-worker-4 @request#106] WARN  AuthRoutes - Failed login attempt for email: nobody@example.com
+2026-04-25 17:50:28.226 [DefaultDispatcher-worker-1 @call-context#116] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:50:28.227 [DefaultDispatcher-worker-1 @call-context#116] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:50:28.228 [DefaultDispatcher-worker-2 @coroutine#118] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:50:28.228 [DefaultDispatcher-worker-2 @coroutine#118] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:50:28.462 [DefaultDispatcher-worker-1 @request#116] INFO  AuthRoutes - New user registered: id=1, email=me@example.com
+2026-04-25 17:50:28.699 [DefaultDispatcher-worker-4 @request#126] INFO  AuthRoutes - User logged in: id=1, email=me@example.com
+2026-04-25 17:51:27.246 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:27.397 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - Application started in 0.16 seconds.
+2026-04-25 17:51:27.399 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:27.400 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:27.768 [DefaultDispatcher-worker-3 @request#2] INFO  AuthRoutes - New user registered: id=1, email=wrong@example.com
+2026-04-25 17:51:28.034 [DefaultDispatcher-worker-1 @request#12] WARN  AuthRoutes - Failed login attempt for email: wrong@example.com
+2026-04-25 17:51:28.050 [DefaultDispatcher-worker-2 @call-context#18] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.051 [DefaultDispatcher-worker-2 @call-context#18] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:51:28.052 [DefaultDispatcher-worker-3 @coroutine#20] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.052 [DefaultDispatcher-worker-3 @coroutine#20] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.099 [DefaultDispatcher-worker-3 @call-context#27] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.100 [DefaultDispatcher-worker-3 @call-context#27] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:51:28.101 [DefaultDispatcher-worker-4 @coroutine#29] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.101 [DefaultDispatcher-worker-4 @coroutine#29] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.117 [DefaultDispatcher-worker-4 @call-context#36] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.118 [DefaultDispatcher-worker-4 @call-context#36] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:28.119 [DefaultDispatcher-worker-2 @coroutine#38] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.119 [DefaultDispatcher-worker-2 @coroutine#38] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.370 [DefaultDispatcher-worker-4 @request#36] INFO  AuthRoutes - New user registered: id=1, email=dup@example.com
+2026-04-25 17:51:28.384 [DefaultDispatcher-worker-4 @call-context#52] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.385 [DefaultDispatcher-worker-4 @call-context#52] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:28.385 [DefaultDispatcher-worker-1 @coroutine#54] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.386 [DefaultDispatcher-worker-1 @coroutine#54] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.395 [DefaultDispatcher-worker-3 @call-context#61] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.396 [DefaultDispatcher-worker-3 @call-context#61] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:51:28.396 [DefaultDispatcher-worker-1 @coroutine#63] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.396 [DefaultDispatcher-worker-1 @coroutine#63] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.634 [DefaultDispatcher-worker-1 @request#61] INFO  AuthRoutes - New user registered: id=1, email=test@example.com
+2026-04-25 17:51:28.653 [DefaultDispatcher-worker-1 @call-context#72] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.654 [DefaultDispatcher-worker-1 @call-context#72] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:28.655 [DefaultDispatcher-worker-4 @coroutine#74] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.655 [DefaultDispatcher-worker-4 @coroutine#74] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.664 [DefaultDispatcher-worker-5 @call-context#81] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.665 [DefaultDispatcher-worker-5 @call-context#81] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:28.665 [DefaultDispatcher-worker-2 @coroutine#83] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.666 [DefaultDispatcher-worker-2 @coroutine#83] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.679 [DefaultDispatcher-worker-1 @call-context#90] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:28.679 [DefaultDispatcher-worker-1 @call-context#90] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:28.680 [DefaultDispatcher-worker-5 @coroutine#92] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:28.680 [DefaultDispatcher-worker-5 @coroutine#92] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:28.919 [DefaultDispatcher-worker-1 @request#90] INFO  AuthRoutes - New user registered: id=1, email=flow@example.com
+2026-04-25 17:51:29.182 [DefaultDispatcher-worker-4 @request#100] INFO  AuthRoutes - User logged in: id=1, email=flow@example.com
+2026-04-25 17:51:29.192 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:29.193 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:29.193 [DefaultDispatcher-worker-2 @coroutine#108] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:29.193 [DefaultDispatcher-worker-2 @coroutine#108] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:29.195 [DefaultDispatcher-worker-4 @request#106] WARN  AuthRoutes - Failed login attempt for email: nobody@example.com
+2026-04-25 17:51:29.204 [DefaultDispatcher-worker-5 @call-context#116] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:51:29.205 [DefaultDispatcher-worker-5 @call-context#116] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:51:29.205 [DefaultDispatcher-worker-1 @coroutine#118] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:51:29.205 [DefaultDispatcher-worker-1 @coroutine#118] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:51:29.443 [DefaultDispatcher-worker-5 @request#116] INFO  AuthRoutes - New user registered: id=1, email=me@example.com
+2026-04-25 17:51:29.682 [DefaultDispatcher-worker-2 @request#126] INFO  AuthRoutes - User logged in: id=1, email=me@example.com
+2026-04-25 17:58:48.790 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:48.958 [DefaultDispatcher-worker-1 @call-context#2] INFO  ktor.test - Application started in 0.178 seconds.
+2026-04-25 17:58:48.960 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:48.960 [DefaultDispatcher-worker-3 @coroutine#4] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:49.366 [DefaultDispatcher-worker-1 @request#2] INFO  AuthRoutes - New user registered: id=1, email=wrong@example.com
+2026-04-25 17:58:49.633 [DefaultDispatcher-worker-3 @request#12] WARN  AuthRoutes - Failed login attempt for email: wrong@example.com
+2026-04-25 17:58:49.650 [DefaultDispatcher-worker-4 @call-context#18] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:49.651 [DefaultDispatcher-worker-4 @call-context#18] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:58:49.651 [DefaultDispatcher-worker-2 @coroutine#20] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:49.651 [DefaultDispatcher-worker-2 @coroutine#20] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:49.692 [DefaultDispatcher-worker-1 @call-context#27] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:49.693 [DefaultDispatcher-worker-1 @call-context#27] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:49.694 [DefaultDispatcher-worker-2 @coroutine#29] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:49.694 [DefaultDispatcher-worker-2 @coroutine#29] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:49.706 [DefaultDispatcher-worker-3 @call-context#36] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:49.707 [DefaultDispatcher-worker-3 @call-context#36] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:49.708 [DefaultDispatcher-worker-4 @coroutine#38] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:49.708 [DefaultDispatcher-worker-4 @coroutine#38] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:49.952 [DefaultDispatcher-worker-3 @request#36] INFO  AuthRoutes - New user registered: id=1, email=dup@example.com
+2026-04-25 17:58:49.967 [DefaultDispatcher-worker-4 @call-context#52] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:49.968 [DefaultDispatcher-worker-4 @call-context#52] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:49.968 [DefaultDispatcher-worker-3 @coroutine#54] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:49.968 [DefaultDispatcher-worker-3 @coroutine#54] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:49.977 [DefaultDispatcher-worker-2 @call-context#61] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:49.978 [DefaultDispatcher-worker-2 @call-context#61] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:49.979 [DefaultDispatcher-worker-3 @coroutine#63] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:49.979 [DefaultDispatcher-worker-3 @coroutine#63] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:50.216 [DefaultDispatcher-worker-2 @request#61] INFO  AuthRoutes - New user registered: id=1, email=test@example.com
+2026-04-25 17:58:50.234 [DefaultDispatcher-worker-5 @call-context#72] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:50.235 [DefaultDispatcher-worker-5 @call-context#72] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:50.236 [DefaultDispatcher-worker-4 @coroutine#74] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:50.236 [DefaultDispatcher-worker-4 @coroutine#74] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:50.248 [DefaultDispatcher-worker-4 @call-context#81] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:50.249 [DefaultDispatcher-worker-4 @call-context#81] INFO  ktor.test - Application started in 0.005 seconds.
+2026-04-25 17:58:50.250 [DefaultDispatcher-worker-3 @coroutine#83] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:50.250 [DefaultDispatcher-worker-3 @coroutine#83] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:50.260 [DefaultDispatcher-worker-4 @call-context#90] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:50.261 [DefaultDispatcher-worker-4 @call-context#90] INFO  ktor.test - Application started in 0.002 seconds.
+2026-04-25 17:58:50.261 [DefaultDispatcher-worker-5 @coroutine#92] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:50.261 [DefaultDispatcher-worker-5 @coroutine#92] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:50.497 [DefaultDispatcher-worker-4 @request#90] INFO  AuthRoutes - New user registered: id=1, email=flow@example.com
+2026-04-25 17:58:50.779 [DefaultDispatcher-worker-4 @request#100] INFO  AuthRoutes - User logged in: id=1, email=flow@example.com
+2026-04-25 17:58:50.790 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:50.790 [DefaultDispatcher-worker-4 @call-context#106] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:50.791 [DefaultDispatcher-worker-3 @coroutine#108] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:50.791 [DefaultDispatcher-worker-3 @coroutine#108] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:50.793 [DefaultDispatcher-worker-4 @request#106] WARN  AuthRoutes - Failed login attempt for email: nobody@example.com
+2026-04-25 17:58:50.800 [DefaultDispatcher-worker-5 @call-context#116] INFO  ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-04-25 17:58:50.801 [DefaultDispatcher-worker-5 @call-context#116] INFO  ktor.test - Application started in 0.001 seconds.
+2026-04-25 17:58:50.802 [DefaultDispatcher-worker-3 @coroutine#118] INFO  ktor.test - Responding at http://localhost:80
+2026-04-25 17:58:50.802 [DefaultDispatcher-worker-3 @coroutine#118] INFO  ktor.test - Responding at https://localhost:443
+2026-04-25 17:58:51.041 [DefaultDispatcher-worker-5 @request#116] INFO  AuthRoutes - New user registered: id=1, email=me@example.com
+2026-04-25 17:58:51.278 [DefaultDispatcher-worker-2 @request#126] INFO  AuthRoutes - User logged in: id=1, email=me@example.com

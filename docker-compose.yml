@@ -4,16 +4,16 @@ services:
     container_name: respublika-db
     restart: always
     environment:
-      POSTGRES_USER: respublika_admin
-      POSTGRES_PASSWORD: Nipanimay666
-      POSTGRES_DB: respublika_db
+      POSTGRES_USER: ${DB_USER:?DB_USER required (see .env.example)}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD required (see .env.example)}
+      POSTGRES_DB: ${DB_NAME:-respublika_db}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U respublika_admin -d respublika_db"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
