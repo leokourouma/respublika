@@ -8,3 +8,6 @@
 # Données locales
 /data/*
 !/data/.gitkeep
+# Gradle / Kotlin build artifacts
+build/
+.gradle/
