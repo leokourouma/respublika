@@ -2,9 +2,6 @@
 
 Projet Kotlin dédié à l'analyse et au traitement des données ouvertes de l'Assemblée Nationale française.
 
-<<<<<<< Updated upstream
-## 📊 Gestion des données (Open Data)
-=======
 ---
 
 ## Prerequis
@@ -84,7 +81,6 @@ L'ingestion tourne en tache de fond. Suivre la progression dans les logs du cont
 ---
 
 ## Pages principales
->>>>>>> Stashed changes
 
 | URL | Description |
 |-----|-------------|
@@ -124,10 +120,6 @@ docker compose down
 
 ---
 
-<<<<<<< Updated upstream
 ## 📝 Licence
-=======
-## Licence
->>>>>>> Stashed changes
 
 Ce projet est sous licence [MIT](LICENSE).
