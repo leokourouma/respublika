@@ -26,9 +26,13 @@ class AuthRoutesTest {
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
 
     private fun setupTestDb() {
-        Database.connect("jdbc:h2:mem:test_${System.nanoTime()};DB_CLOSE_DELAY=-1", driver = "org.h2.Driver")
+        Database.connect(
+            "jdbc:h2:mem:test_${System.nanoTime()}_${java.util.UUID.randomUUID()};DB_CLOSE_DELAY=-1",
+            driver = "org.h2.Driver"
+        )
         transaction {
             SchemaUtils.create(Users)
+            Users.deleteAll()
         }
     }
 

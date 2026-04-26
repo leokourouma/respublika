@@ -1,8 +1,25 @@
 const BASE = '/api';
 
-async function get<T>(path: string): Promise<T> {
-	const res = await fetch(`${BASE}${path}`);
+async function get<T>(path: string, token?: string): Promise<T> {
+	const headers: Record<string, string> = {};
+	if (token) headers['Authorization'] = `Bearer ${token}`;
+	const res = await fetch(`${BASE}${path}`, { headers });
 	if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+	return res.json();
+}
+
+async function post<T>(path: string, body: unknown, token?: string): Promise<T> {
+	const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+	if (token) headers['Authorization'] = `Bearer ${token}`;
+	const res = await fetch(`${BASE}${path}`, {
+		method: 'POST',
+		headers,
+		body: JSON.stringify(body)
+	});
+	if (!res.ok) {
+		const err = await res.json().catch(() => ({ error: res.statusText }));
+		throw new Error(err.error || res.statusText);
+	}
 	return res.json();
 }
 
@@ -162,4 +179,68 @@ export function fetchDeputeDeports(id: string) {
 	return get<{ depute_id: string; nom: string; nb_deports: number; badge_ethique_plus: boolean; deports: { uid: string; libelle_portee: string; explication_html: string }[] }>(
 		`/deputes/${id}/deports`
 	);
+}
+
+// ── Auth ──
+
+export interface UserProfile {
+	id: number;
+	email: string;
+	nom: string;
+	localite: string;
+	email_verified: boolean;
+}
+
+export interface AuthResult {
+	token: string;
+	user: UserProfile;
+}
+
+export interface RegisterPayload {
+	email: string;
+	password: string;
+	nom: string;
+	localite: string;
+}
+
+export function register(payload: RegisterPayload) {
+	return post<{ message: string }>('/auth/register', payload);
+}
+
+export function login(email: string, password: string) {
+	return post<AuthResult>('/auth/login', { email, password });
+}
+
+export function fetchMe(token: string) {
+	return get<UserProfile>('/auth/me', token);
+}
+
+// ── Agent Runs ──
+
+export interface AgentRun {
+	id: number;
+	agent_name: string;
+	triggered_by: string;
+	status: 'success' | 'warning' | 'failure';
+	records_processed: number;
+	records_affected: number;
+	started_at: string;
+	finished_at: string;
+	findings: string;
+	error_detail: string;
+}
+
+export function fetchAgentRuns(params?: { page?: number; limit?: number; agent_name?: string }) {
+	const q = new URLSearchParams();
+	if (params?.page) q.set('page', String(params.page));
+	if (params?.limit) q.set('limit', String(params.limit));
+	if (params?.agent_name) q.set('agent_name', params.agent_name);
+	const qs = q.toString();
+	return get<{ page: number; limit: number; total: number; total_pages: number; runs: AgentRun[] }>(
+		`/agents/runs${qs ? '?' + qs : ''}`
+	);
+}
+
+export function fetchAgentFindings(id: number) {
+	return get<Record<string, unknown>>(`/agents/runs/${id}/findings`);
 }

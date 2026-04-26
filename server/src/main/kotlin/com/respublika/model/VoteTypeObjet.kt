@@ -1,0 +1,12 @@
+package com.respublika.model
+
+enum class VoteTypeObjet {
+    RESOLUTION_COMMISSION_ENQUETE,
+    PROJET_LOI_ENSEMBLE,
+    PROPOSITION_LOI_ENSEMBLE,
+    AMENDEMENT,
+    MOTION_CENSURE,
+    DECLARATION_POLITIQUE_GENERALE,
+    ARTICLE,
+    AUTRE,
+}

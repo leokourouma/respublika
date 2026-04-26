@@ -1,6 +1,7 @@
 // server/src/main/kotlin/com/respublika/database/DatabaseFactory.kt
 package com.respublika.database
 
+import com.respublika.model.VoteTypeObjet
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -68,6 +69,39 @@ object Deports : Table("deports") {
     override val primaryKey = PrimaryKey(uid)
 }
 
+object AgentRuns : IntIdTable("agent_runs") {
+    val agentName = varchar("agent_name", 100)
+    val triggeredBy = varchar("triggered_by", 100)
+    val startedAt = varchar("started_at", 50)
+    val finishedAt = varchar("finished_at", 50)
+    val status = varchar("status", 20)
+    val recordsProcessed = integer("records_processed")
+    val recordsAffected = integer("records_affected")
+    val findings = text("findings")
+    val errorDetail = text("error_detail").nullable()
+}
+
+object VoteInsights : IntIdTable("vote_insights") {
+    val scrutinUid = varchar("scrutin_uid", 50).uniqueIndex()
+    val titreCourt = text("titre_court").nullable()
+    val typeObjet = enumerationByName<VoteTypeObjet>("type_objet", 50).nullable()
+    val estConsensuel = bool("est_consensuel").default(false)
+    val demandeursGroupes = array<String>("demandeurs_groupes").nullable()
+    val tauxParticipation = double("taux_participation").nullable()
+    val insightsVersion = integer("insights_version").default(1)
+    val computedAt = varchar("computed_at", 50)
+}
+
+object Users : IntIdTable("users") {
+    val email = varchar("email", 255).uniqueIndex()
+    val passwordHash = text("password_hash")
+    val nom = varchar("nom", 200)
+    val localite = varchar("localite", 300)
+    val emailVerified = bool("email_verified").default(true)
+    val createdAt = varchar("created_at", 50).default("")
+    val updatedAt = varchar("updated_at", 50).default("")
+}
+
 object DatabaseFactory {
     fun init() {
         val driverClassName = "org.postgresql.Driver"
@@ -79,7 +113,7 @@ object DatabaseFactory {
 
         transaction(database) {
             addLogger(StdOutSqlLogger)
-            SchemaUtils.create(Organes, Deputes, Dossiers, Scrutins, VotesGroupes, VotesIndividuels, Deports)
+            SchemaUtils.create(Organes, Deputes, Dossiers, Scrutins, VotesGroupes, VotesIndividuels, Deports, VoteInsights, Users)
         }
     }
 

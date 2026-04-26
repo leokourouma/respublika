@@ -60,7 +60,7 @@ fun Route.agentRoutes() {
     get("/api/agents/runs/{id}/findings") {
         val runId = call.parameters["id"]?.toIntOrNull()
         if (runId == null) {
-            call.respondText("id invalide", status = HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse("id invalide"))
             return@get
         }
 
@@ -81,7 +81,7 @@ fun Route.agentRoutes() {
         }
 
         if (result == null) {
-            call.respondText("Run non trouvé", status = HttpStatusCode.NotFound)
+            call.respond(HttpStatusCode.NotFound, ErrorResponse("Run non trouvé"))
         } else {
             call.respondText(result, ContentType.Application.Json)
         }
