@@ -13,6 +13,8 @@ tags:
     description: Recherche, profils et historique de vote des élus
   - name: Scrutins
     description: Détail des votes et analyse par groupe politique
+  - name: Dossiers
+    description: Dossiers législatifs (lois, propositions, motions) et scrutins associés
   - name: Éthique
     description: Déports et transparence
 
@@ -160,6 +162,44 @@ paths:
         '404':
           description: Scrutin non trouvé
 
+  /api/scrutins/{uid}/insights:
+    get:
+      tags: [Scrutins]
+      summary: Insights dérivés pour un scrutin
+      description: |
+        Retourne les insights pré-calculés (titre court, type d'objet, consensualité,
+        groupes demandeurs, taux de participation) pour un scrutin donné.
+        Les insights sont produits en amont par un job de dérivation et stockés dans
+        la table `vote_insights`.
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: UID du scrutin (ex. VTANR5L17V3)
+          schema: { type: string }
+      responses:
+        '200':
+          description: Insights du scrutin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteInsightResponse'
+        '404':
+          description: |
+            Scrutin introuvable, ou scrutin existant sans insights calculés.
+            Le champ `error` distingue les deux cas :
+            - `scrutin_not_found` : aucun scrutin avec cet uid
+            - `insights_not_computed` : scrutin trouvé mais pas de ligne dans vote_insights
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum: [scrutin_not_found, insights_not_computed]
+                  uid: { type: string }
+
   /api/scrutins/recherche:
     get:
       tags: [Scrutins]
@@ -193,6 +233,130 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ScrutinResume'
+
+  /api/dossiers:
+    get:
+      tags: [Dossiers]
+      summary: Liste paginée des dossiers législatifs
+      description: |
+        Retourne les dossiers législatifs (légalisature 17 par défaut) avec
+        filtres optionnels par état, date plancher de dernière décision, et
+        recherche textuelle sur le titre.
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20, maximum: 100 }
+        - name: etat
+          in: query
+          description: Liste d'états séparés par des virgules
+          schema:
+            type: string
+            example: "EN_COURS,ADOPTE,PROMULGUE"
+        - name: since
+          in: query
+          description: Filtre les dossiers dont la dernière décision est ≥ cette date (YYYY-MM-DD)
+          schema: { type: string, format: date }
+        - name: q
+          in: query
+          description: Recherche textuelle insensible à la casse sur le titre
+          schema: { type: string }
+      responses:
+        '200':
+          description: Liste paginée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page: { type: integer }
+                  limit: { type: integer }
+                  total: { type: integer }
+                  total_pages: { type: integer }
+                  dossiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DossierResume'
+        '400':
+          description: Paramètre `since` mal formé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: { type: string, enum: [invalid_since] }
+                  hint: { type: string }
+
+  /api/dossiers/{uid}:
+    get:
+      tags: [Dossiers]
+      summary: Détail d'un dossier législatif et premiers scrutins associés
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: UID du dossier (ex. DLR5L17N50168)
+          schema: { type: string }
+      responses:
+        '200':
+          description: Détail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DossierDetail'
+        '404':
+          description: Dossier inconnu
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: { type: string, enum: [dossier_not_found] }
+                  uid: { type: string }
+
+  /api/dossiers/{uid}/scrutins:
+    get:
+      tags: [Dossiers]
+      summary: Scrutins associés à un dossier (paginé)
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 50, maximum: 200 }
+      responses:
+        '200':
+          description: Scrutins paginés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid: { type: string }
+                  page: { type: integer }
+                  limit: { type: integer }
+                  total: { type: integer }
+                  total_pages: { type: integer }
+                  scrutins:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DossierScrutinSummary'
+        '404':
+          description: Dossier inconnu
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: { type: string, enum: [dossier_not_found] }
+                  uid: { type: string }
 
   /api/deports/latest:
     get:
@@ -308,10 +472,24 @@ components:
         nombre_votants: { type: integer }
         suffrages_exprimes: { type: integer }
         nbre_suffrages_requis: { type: integer }
+        dossier_uid:
+          type: string
+          nullable: true
+          description: |
+            UID du dossier législatif parent quand le lien a pu être résolu.
+            Null si le scrutin n'a pas (encore) été rattaché.
+        dossier:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/ScrutinDossierRef'
         groupes:
           type: array
           items:
             $ref: '#/components/schemas/VoteGroupe'
+        insights:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/VoteInsightResponse'
 
     VoteGroupe:
       type: object
@@ -337,6 +515,152 @@ components:
         date_vote: { type: string }
         sort: { type: string }
         nombre_votants: { type: integer }
+        insights:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/VoteInsightResponse'
+
+    VoteInsightResponse:
+      type: object
+      required:
+        - scrutin_uid
+        - est_consensuel
+        - demandeurs_groupes
+        - insights_version
+        - computed_at
+      properties:
+        scrutin_uid:
+          type: string
+          description: UID du scrutin (référence vers `scrutins.uid`)
+          example: "VTANR5L17V3"
+        titre_court:
+          type: string
+          nullable: true
+          description: Version raccourcie et capitalisée du titre du scrutin
+          example: "Création d'une commission d'enquête sur les manquements des politiques publiques de protection de l'enfance"
+        type_objet:
+          type: string
+          nullable: true
+          enum:
+            - RESOLUTION_COMMISSION_ENQUETE
+            - PROJET_LOI_ENSEMBLE
+            - PROPOSITION_LOI_ENSEMBLE
+            - AMENDEMENT
+            - MOTION_CENSURE
+            - DECLARATION_POLITIQUE_GENERALE
+            - ARTICLE
+            - AUTRE
+          example: RESOLUTION_COMMISSION_ENQUETE
+        est_consensuel:
+          type: boolean
+          description: True si ≥ 90% des suffrages exprimés vont dans la même direction (avec ≥ 50 exprimés)
+          example: true
+        demandeurs_groupes:
+          type: array
+          description: Groupes politiques à l'origine du scrutin (vide si aucun identifié)
+          items: { type: string }
+          example: ["La France insoumise - Nouveau Front Populaire"]
+        taux_participation:
+          type: number
+          format: double
+          nullable: true
+          description: Ratio votants / total députés (0.0 à 1.0)
+          example: 0.3535529715762274
+        insights_version:
+          type: integer
+          description: Version du dériveur ayant produit ces insights (à comparer pour détecter une re-dérivation)
+          example: 1
+        computed_at:
+          type: string
+          description: Horodatage ISO-8601 de la dérivation
+          example: "2026-04-26T19:45:12.123Z"
+
+    DossierResume:
+      type: object
+      required: [uid, titre, type, etat, legislature, nb_scrutins]
+      properties:
+        uid: { type: string, example: "DLR5L17N50168" }
+        titre: { type: string }
+        titre_court:
+          type: string
+          nullable: true
+        type:
+          type: string
+          enum:
+            - LOI_ORDINAIRE
+            - LOI_ORGANIQUE
+            - PROPOSITION_RESOLUTION
+            - MOTION_CENSURE
+            - AUTRE
+        etat:
+          type: string
+          enum: [DORMANT, EN_COURS, ADOPTE, REJETE, RETIRE, PROMULGUE]
+        legislature:
+          type: integer
+          example: 17
+        date_depot:
+          type: string
+          format: date
+          nullable: true
+        date_derniere_decision:
+          type: string
+          format: date
+          nullable: true
+        date_promulgation:
+          type: string
+          format: date
+          nullable: true
+        numero_loi:
+          type: string
+          nullable: true
+        nb_scrutins:
+          type: integer
+          description: Nombre de scrutins rattachés à ce dossier (lien voteRef ou séance unique)
+
+    DossierDetail:
+      type: object
+      properties:
+        uid: { type: string }
+        titre: { type: string }
+        titre_court: { type: string, nullable: true }
+        type:
+          type: string
+          enum:
+            - LOI_ORDINAIRE
+            - LOI_ORGANIQUE
+            - PROPOSITION_RESOLUTION
+            - MOTION_CENSURE
+            - AUTRE
+        etat:
+          type: string
+          enum: [DORMANT, EN_COURS, ADOPTE, REJETE, RETIRE, PROMULGUE]
+        legislature: { type: integer }
+        date_depot: { type: string, format: date, nullable: true }
+        date_derniere_decision: { type: string, format: date, nullable: true }
+        date_promulgation: { type: string, format: date, nullable: true }
+        numero_loi: { type: string, nullable: true }
+        scrutins:
+          type: array
+          items:
+            $ref: '#/components/schemas/DossierScrutinSummary'
+
+    DossierScrutinSummary:
+      type: object
+      properties:
+        uid: { type: string }
+        titre: { type: string }
+        date_vote: { type: string }
+        sort: { type: string, nullable: true }
+        nombre_votants: { type: integer, nullable: true }
+
+    ScrutinDossierRef:
+      type: object
+      properties:
+        uid: { type: string }
+        titre: { type: string }
+        etat:
+          type: string
+          enum: [DORMANT, EN_COURS, ADOPTE, REJETE, RETIRE, PROMULGUE]
 
     Deport:
       type: object
