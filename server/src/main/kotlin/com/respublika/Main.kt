@@ -17,14 +17,47 @@ import com.respublika.auth.JwtService
 import com.respublika.auth.UserSeeder
 import com.respublika.database.DatabaseFactory
 import com.respublika.routes.*
+import com.respublika.service.DossierIngestorCli
+import com.respublika.service.DossierLinkerCli
 import com.respublika.service.MasterIngestor
+import com.respublika.service.ScrutinRawJsonBackfillCli
+import com.respublika.service.VoteInsightsBackfillCli
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 
 val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-fun main() {
-    embeddedServer(Netty, port = 8081, host = "0.0.0.0", module = Application::module).start(wait = true)
+fun main(args: Array<String>) {
+    if (args.isNotEmpty()) {
+        when (val cmd = args[0]) {
+            "backfill-scrutins-raw-json" -> {
+                DatabaseFactory.init()
+                runBlocking { ScrutinRawJsonBackfillCli.execute(args.drop(1).toTypedArray()) }
+                return
+            }
+            "backfill-vote-insights" -> {
+                DatabaseFactory.init()
+                runBlocking { VoteInsightsBackfillCli.execute(args.drop(1).toTypedArray()) }
+                return
+            }
+            "ingest-dossiers" -> {
+                DatabaseFactory.init()
+                runBlocking { DossierIngestorCli.execute(args.drop(1).toTypedArray()) }
+                return
+            }
+            "link-dossiers" -> {
+                DatabaseFactory.init()
+                runBlocking { DossierLinkerCli.execute(args.drop(1).toTypedArray()) }
+                return
+            }
+            else -> {
+                System.err.println("Unknown command: $cmd")
+                kotlin.system.exitProcess(2)
+            }
+        }
+    }
+    val port = System.getenv("PORT")?.toIntOrNull() ?: 8081
+    embeddedServer(Netty, port = port, host = "0.0.0.0", module = Application::module).start(wait = true)
 }
 
 fun Application.module() {
@@ -94,5 +127,6 @@ fun Application.module() {
         deputeRoutes()
         ethiqueRoutes()
         scrutinRoutes()
+        dossierRoutes()
     }
 }

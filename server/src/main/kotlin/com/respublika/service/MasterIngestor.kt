@@ -21,6 +21,22 @@ class MasterIngestor(private val dataPath: String) {
     private val jsonHandler = Json { ignoreUnknownKeys = true }
     private val scrutinIngestor = ScrutinIngestor()
 
+    /**
+     * Order of execution (DO NOT REORDER):
+     *
+     *   1. organes                    — referential
+     *   2. dossiers (legacy table)    — kept for back-compat, will be removed in V2
+     *   3. acteurs (députés)          — depends on organes
+     *   4. scrutins + votes           — depends on acteurs and organes
+     *   5. deports                    — depends on acteurs
+     *   6. dossiers_legislatifs       — depends on nothing in DB; reads JSON only
+     *   7. DossierLinker              — must run AFTER (4) AND (6); writes
+     *                                    scrutins.dossier_uid + candidates
+     *
+     * Steps 6 and 7 are gated: if the scrutin ingest produced 0 rows or the
+     * dossier ingest produced 0 rows, the linker is skipped (no data to link).
+     * A failure in any step halts the pipeline and surfaces in the summary.
+     */
     suspend fun processAll(): String {
         println("🚀 Lancement de l'ingestion exhaustive ResPublika...")
 
@@ -126,6 +142,30 @@ class MasterIngestor(private val dataPath: String) {
                     }
                 }
             }
+        }
+
+        // 6. Dossiers législatifs (V5 schema, content-filtered to L17)
+        val dossierIngestor = DossierIngestor(dataPath = "$dataPath/dossierParlementaire")
+        val dossierResult = try {
+            dossierIngestor.run(triggeredBy = "master-ingest")
+        } catch (e: Exception) {
+            println("❌ DossierIngestor a échoué : ${e.message}")
+            throw e
+        }
+        println("  dossiers_legislatifs ingested: ${dossierResult.ingested} (skipped non-L17: ${dossierResult.skippedNotL17})")
+
+        // 7. DossierLinker — only if both prior stages produced data.
+        val scrutinReport = reports.firstOrNull { it.folder == "scrutins" }
+        val canLink = (scrutinReport?.success ?: 0) > 0 && dossierResult.ingested > 0
+        if (canLink) {
+            try {
+                DossierLinker().run(triggeredBy = "master-ingest")
+            } catch (e: Exception) {
+                println("❌ DossierLinker a échoué : ${e.message}")
+                throw e
+            }
+        } else {
+            println("⏭️  DossierLinker ignoré (scrutins=${scrutinReport?.success ?: 0}, dossiers=${dossierResult.ingested})")
         }
 
         val summary = buildReport(reports)
