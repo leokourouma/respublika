@@ -1,9 +1,15 @@
 // server/src/main/kotlin/com/respublika/database/DatabaseFactory.kt
 package com.respublika.database
 
+import com.respublika.model.DossierEtat
+import com.respublika.model.DossierType
+import com.respublika.model.LinkMethod
 import com.respublika.model.VoteTypeObjet
 import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.javatime.date
+import org.jetbrains.exposed.sql.javatime.timestamp
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -40,7 +46,40 @@ object Scrutins : Table("scrutins") {
     val nombreVotants = integer("nombre_votants").nullable()
     val suffragesExprimes = integer("suffrages_exprimes").nullable()
     val nbreSuffragesRequis = integer("nbre_suffrages_requis").nullable()
+    val rawJson = jsonb("raw_json").nullable()
+    val dossierUid = varchar("dossier_uid", 50).nullable()
+    val dossierLinkMethod = enumerationByName<LinkMethod>("dossier_link_method", 20).nullable()
+    val dossierLinkConfidence = decimal("dossier_link_confidence", precision = 3, scale = 2).nullable()
     override val primaryKey = PrimaryKey(uid)
+}
+
+object DossiersLegislatifs : Table("dossiers_legislatifs") {
+    val uid = varchar("uid", 50)
+    val titre = text("titre")
+    val titreCourt = text("titre_court").nullable()
+    val type = enumerationByName<DossierType>("type", 40)
+    val etat = enumerationByName<DossierEtat>("etat", 20)
+    val legislature = short("legislature")
+    val dateDepot = date("date_depot").nullable()
+    val dateDerniereDecision = date("date_derniere_decision").nullable()
+    val datePromulgation = date("date_promulgation").nullable()
+    val numeroLoi = varchar("numero_loi", 40).nullable()
+    val themes = array<String>("themes").nullable()
+    val rawJson = jsonb("raw_json")
+    val createdAt = timestamp("created_at")
+    val updatedAt = timestamp("updated_at")
+    override val primaryKey = PrimaryKey(uid)
+}
+
+object DossierLinkCandidates : LongIdTable("dossier_link_candidates") {
+    val scrutinUid = varchar("scrutin_uid", 50)
+    val dossierUid = varchar("dossier_uid", 50)
+    val linkMethod = enumerationByName<LinkMethod>("link_method", 20)
+    val confidence = decimal("confidence", precision = 3, scale = 2)
+    val createdAt = timestamp("created_at")
+    init {
+        uniqueIndex(scrutinUid, dossierUid)
+    }
 }
 
 object VotesGroupes : IntIdTable("votes_groupes") {
@@ -113,10 +152,19 @@ object DatabaseFactory {
 
         transaction(database) {
             addLogger(StdOutSqlLogger)
-            SchemaUtils.create(Organes, Deputes, Dossiers, Scrutins, VotesGroupes, VotesIndividuels, Deports, VoteInsights, Users)
+            SchemaUtils.create(
+                Organes, Deputes, Dossiers, Scrutins, VotesGroupes, VotesIndividuels,
+                Deports, VoteInsights, Users, DossiersLegislatifs, DossierLinkCandidates,
+            )
         }
     }
 
     suspend fun <T> dbQuery(block: suspend () -> T): T =
         newSuspendedTransaction { block() }
+
+    // Variant for tests/callers that need to pin the transaction to a specific Database
+    // (e.g. integration tests that connect to an isolated H2, where the per-thread
+    // TransactionManager ThreadLocal would otherwise stick to the first-ever-connected DB).
+    suspend fun <T> dbQuery(db: Database?, block: suspend () -> T): T =
+        newSuspendedTransaction(db = db) { block() }
 }
